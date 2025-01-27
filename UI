@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Stacking Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+
+    #image-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      border: 2px dashed #ccc;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .stacked-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.2; /* 20% opacity */
+    }
+
+    input[type="file"] {
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Image Stacking Tool</h1>
+  <div id="image-container"></div>
+  <input type="file" id="image-input" accept="image/*" multiple>
+  <button id="clear-button">Clear Images</button>
+
+  <script>
+    const imageContainer = document.getElementById('image-container');
+    const imageInput = document.getElementById('image-input');
+    const clearButton = document.getElementById('clear-button');
+
+    imageInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = document.createElement('img');
+          img.src = reader.result;
+          img.className = 'stacked-image';
+          imageContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    clearButton.addEventListener('click', () => {
+      imageContainer.innerHTML = '';
+      imageInput.value = '';
+    });
+  </script>
+</body>
+</html>
